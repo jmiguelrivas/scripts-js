@@ -271,7 +271,7 @@ const islandSection = {
     h.title('Estacionamiento')
     h.tap(800, 1200, 'abrir estacionamiento', 1)
     h.tap(700, 2180, 'abrir tienda', 1)
-    h.tap(220, 1100, 'abrir modal de compra de guia', 1)
+    h.tap(280, 1300, 'abrir modal de compra de guia', 1)
     h.tap(730, 1100, 'seleccionar 5', 1)
     h.tap(520, 1290, 'comprar', 2.5)
     h.tap(900, 630, 'cerrar notificacion de compra', 1)
