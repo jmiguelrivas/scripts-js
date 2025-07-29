@@ -234,9 +234,10 @@ const homeSection = {
   gifts() {
     h.title("Regalos");
     h.tap(50, 500, `Abrir modal de regalos`, 1);
+
     h.tap(500, 1600, `Abrir seccion de privilegios`, 1);
-    h.tap(500, 1550, `Tomar recompensa`, 1);
-    h.tap(500, 1550, `Cerrar notificaion`, 1);
+    h.tap(500, 1500, `Tomar recompensa`, 1);
+    h.tap(500, 1500, `Cerrar notificaion`, 1);
     h.tap(750, 1600, `Abrir seccion de eventos`, 1);
 
     h.tap(500, 700, `Abrir seccion de paquete de crescimiento`, 1);
