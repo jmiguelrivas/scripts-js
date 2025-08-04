@@ -21,6 +21,29 @@ const gcolor = {
 
 const profiles = ["doruk", "bruno", "eko"];
 
+function isOnWeek(date = new Date(), reference = new Date("2024-01-01")) {
+  // Make sure reference is a Monday
+  const ref = new Date(reference);
+  ref.setHours(0, 0, 0, 0);
+  const refDay = ref.getDay();
+  if (refDay !== 1) {
+    // shift back to previous Monday
+    ref.setDate(ref.getDate() - ((refDay + 6) % 7));
+  }
+
+  // Align input date to Monday as well
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  const day = d.getDay();
+  d.setDate(d.getDate() - ((day + 6) % 7));
+
+  const msInWeek = 7 * 24 * 60 * 60 * 1000;
+  const weekIndex = Math.floor((d - ref) / msInWeek);
+  return weekIndex % 2 === 0; // or === 1 to shift phase
+}
+
+const alternateWeek = isOnWeek();
+
 function renderProgressBar(progress, total) {
   const percent = Math.floor((progress / total) * 100);
   const barLength = 30; // characters
@@ -215,16 +238,15 @@ const homeSection = {
         coord: { x: 750, y: 1400 },
         item: "defeat 100 enemies",
       },
-      {
-        coord: { x: 750, y: 1550 },
-        item: "defeat 150 enemies",
-      },
     ];
 
     steps2.forEach(({ item, coord }) => {
       h.tap(coord.x, coord.y, item, 0);
     });
     h.wait(1);
+    h.tap(100, 600, `cerrar notificacion`, 1);
+
+    h.tap(750, 870, "defeat 150 enemies", 1);
     h.tap(100, 600, `cerrar notificacion`, 1);
     h.tap(450, 600, `tomar recompensas`, 1);
     h.tap(100, 600, `cerrar notificacion`, 1);
@@ -250,10 +272,17 @@ const homeSection = {
     h.tap(780, 550, `cerrar notificacion`, 1);
     h.tap(500, 1850, `cerrar seccion de oferta diaria`, 1);
 
-    h.tap(500, 1300, `Abrir seccion de paquete de seleccion`, 1);
-    h.tap(780, 900, `tomar recompensa`, 1);
-    h.tap(500, 400, `cerrar notificacion`, 1);
-    h.tap(500, 1850, `cerrar seccion de paquete de seleccion`, 1);
+    if (alternateWeek) {
+      h.tap(500, 1300, `Abrir seccion del baul de reembolso`, 1);
+      h.tap(780, 550, `tomar recompensa`, 1);
+      h.tap(780, 550, `cerrar notificacion`, 1);
+      h.tap(500, 1850, `cerrar seccion del baul de reembolso`, 1);
+    } else {
+      h.tap(500, 1300, `Abrir seccion de paquete de seleccion`, 1);
+      h.tap(780, 900, `tomar recompensa`, 1);
+      h.tap(500, 400, `cerrar notificacion`, 1);
+      h.tap(500, 1850, `cerrar seccion de paquete de seleccion`, 1);
+    }
 
     h.tap(500, 1500, `Abrir seccion de tarjeta de valor`, 1);
     h.tap(780, 550, `tomar recompensa`, 1);
@@ -644,7 +673,7 @@ function init() {
     homeSection.init();
     fightSection.init();
     islandSection.init();
-    // clanSection.init()
+    clanSection.init();
     shopSection.init();
     homeSection.initFinalTasks();
 
